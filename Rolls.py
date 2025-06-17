@@ -39,16 +39,17 @@ class Rolls:
 
         return result
 
-''' testing
-test = Rolls(100, open_roll=True, fumble=5)
-test_list = []
-for i in range(100):
-    my_roll = test.roll()
-    test_list.append(my_roll)
+if __name__ == "__main__":
+    # Example usagetest = Rolls(100, open_roll=True, fumble=5)
+    test_list = []
+    test = Rolls(100, minimum=20, open_roll=True, fumble=2)
+    for i in range(100):
+        my_roll = test.roll()
+        test_list.append(my_roll)
 
-print(f"this roll: {test_list}")
-print(f"min: {min(test_list)}")
-print(f"max: {max(test_list)}")
-print(f"avg: {sum(test_list)/len(test_list)}")
-print(f"fumbles: {test_list.count(False)}")
-#'''
+    print(f"this roll: {test_list}")
+    print(f"min: {min(test_list)}")
+    print(f"max: {max(test_list)}")
+    print(f"avg: {sum(test_list)/len(test_list)}")
+    print(f"fumbles: {test_list.count(False)}")
+    
