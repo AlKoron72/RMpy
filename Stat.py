@@ -8,11 +8,12 @@ def get_bonus(for_value:int) -> int:
 
 
 class Stat:
-    standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
+    # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
 
     def __init__(self, name:str, value:int):
         self.name = name
         self.value = value
+        self.max_value = value
         self.bonus = get_bonus(self.value)
         self.bonus_race = 0
         self.total = self.bonus + self.bonus_race

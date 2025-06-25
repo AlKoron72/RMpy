@@ -1,6 +1,7 @@
 import SHORTS
 from Rolls import Rolls
 from Stat import Stat
+from Job import Job
 import pandas as pd
 
 
@@ -15,16 +16,18 @@ def create_random_set(self):
 
 
 class Char:
-    def __init__(self, name, age):
+    def __init__(self, name: str, age: int, job: str = "Berufsloser"):
         self.name = name
         self.age = age
-        self.Stats = []
+        self.Stats = []  # Stats ist eine Liste von Stat-Instanzen
         create_empty_set(self)
+        self.job = Job(job);
 #        for s in SHORTS.SHORTS:
 #            self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
 
     def __str__(self):
-        to_string = f"{self.name} is {self.age} years old\n"
+        to_string = f"{self.name} ist {self.age} Jahre alt.\n"
+        to_string += f"Er ist ein {self.job.name}.\n"
         for s in self.Stats:
             to_string += f"{s}\n"
         return to_string
@@ -41,6 +44,15 @@ class Char:
         for s in SHORTS.SHORTS:
             index.append(str(s.name))
         return pd.DataFrame(data, index=index)
+    
+    def set_stat_value(self, stat_short:str, value:int):
+        for s in self.Stats:
+            if s.name == stat_short:
+                print(f"({stat_short}/{value}) for: {s.name}")
+                s.value = value
+                print(f"(got: {s.value}")
+
+                
 
 
 if __name__ == "__main__":

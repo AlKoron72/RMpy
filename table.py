@@ -1,0 +1,130 @@
+#import random
+import streamlit as st
+from SHORTS import SHORTS
+from Rolls import Rolls
+from Char import Char
+
+roller = Rolls(100, minimum=20)
+bob = Char("Bob", 1)
+
+# Spaltennamen aus dem Enum extrahieren
+columns = [short.name for short in SHORTS]
+
+row_labels = []
+# Benutzerdefinierte Zeilenbeschriftung
+if "row_labels" not in st.session_state:
+    st.session_state.row_labels = []
+    for s in SHORTS:
+        numb = int(roller.roll())
+        st.session_state.row_labels.append(numb)
+    st.session_state.row_labels.sort()
+row_labels = st.session_state.row_labels
+
+def do_max(collection):
+    print("do_max")
+    #for c in collection:
+        #print(f"is: {c}")
+    
+# save Button-Function
+def do_save(selected_items):
+    st.write("folgende Werte gespeichter:")
+    my_collection = []
+    
+    for column_name, row_label in selected_items:
+        if row_label:
+            my_collection.append(f"{column_name}: {row_label}")
+            bob.set_stat_value(column_name, row_label)
+            #print(bob)
+        else:
+            my_collection.append(f"{column_name}: Keine Auswahl")
+    st.write(str(my_collection))
+    if st.button("roll Max >>", key="max"):
+        do_max(my_collection)
+
+# Funktion, um den Zustand zu prüfen und nur eine Checkbox pro Zeile/Spalte zuzulassen
+def enforce_single_selection(row_idx, col_idx):
+    # Schlüssel der aktuell geklickten Checkbox
+    current_key = f"{row_idx}_{col_idx}"
+    
+    # Überprüfen, ob Checkbox aktiviert wurde
+    if st.session_state[current_key]:
+        # Deaktiviere alle anderen Checkboxen in derselben Zeile
+        for c in range(len(columns)):
+            if c != col_idx:
+                st.session_state[f"{row_idx}_{c}"] = False
+        
+        # Deaktiviere alle anderen Checkboxen in derselben Spalte
+        for r in range(len(row_labels)):
+            if r != row_idx:
+                st.session_state[f"{r}_{col_idx}"] = False
+
+
+# Tabelle mit Checkboxen anzeigen
+st.header("Kreuz-Tabelle")
+#st.write("Zeilenbeschriftungen (row_labels):", row_labels)
+avg = sum(row_labels)/len(row_labels)
+st.write(f"Durchschnitt: {avg} ({avg-60:.1f})")
+
+# Kopfzeile der Tabelle anzeigen
+header_cols = st.columns(len(columns) + 1)  # +1 für die Zeilenbeschriftung
+header_cols[0].write("Würfe")  # Erste Spalte für Zeilenbeschriftungen
+for col, column_name in zip(header_cols[1:], columns):
+    if column_name in ["ST", "CO"]:  # Bedingung für spezielle Spalten
+        col.markdown(
+            f'<span style="color:#0000cc; font-weight:bold;">{column_name} &#x2B06;</span>',
+            unsafe_allow_html=True,
+        )
+    else:
+        col.write(column_name)  # Normale Spaltennamen
+
+# Tabelle erstellen
+for row_idx, row_label in enumerate(row_labels):  # `row_labels` werden für Zeilen verwendet
+    row_cols = st.columns(len(columns) + 1)  # +1 für die Zeilenbeschriftung
+    row_cols[0].write(row_label)  # Erste Spalte zeigt die benutzerdefinierte Zeilenbeschriftung
+    for col_idx, (col, column_name) in enumerate(zip(row_cols[1:], columns)):
+        # Eindeutigen Schlüssel erstellen
+        unique_key = f"{row_idx}_{col_idx}"
+        
+        # Checkbox erstellen
+        with col:
+            st.checkbox(
+                "",
+                key=unique_key,  # Eindeutiger Schlüssel
+                on_change=enforce_single_selection,  # Funktion bei Änderung aufrufen
+                args=(row_idx, col_idx),  # Argumente für die Funktion
+            )
+
+# --- Ergebnis unter der Tabelle anzeigen ---
+
+# Zähle die Anzahl der gesetzten Checkboxen
+selected_count = sum(
+    st.session_state[f"{row_idx}_{col_idx}"]
+    for row_idx in range(len(row_labels))
+    for col_idx in range(len(columns))
+)
+
+# Pro Zeile herausfinden, welche Checkbox aktiviert ist
+selected_per_row = {}
+for col_idx, column_name in enumerate(columns):  # Iteriere über alle Spalten
+    selected_row = None  # Standardwert, falls keine Auswahl getroffen wurde
+    for row_idx, row_label in enumerate(row_labels):  # Iteriere über alle Zeilen
+        if st.session_state[f"{row_idx}_{col_idx}"]:
+            selected_row = row_label  # Speichere die Zeilenbeschriftung der aktivierten Checkbox
+            break
+    # Füge die Spalte und den zugehörigen Wert (oder "Keine Auswahl") hinzu
+    if selected_row is not None:
+        selected_per_row[column_name] = selected_row
+    else:
+        selected_per_row[column_name] = "Keine Auswahl"
+        
+# Zeige die Anzahl der aktivierten Checkboxen
+if selected_count == 10:
+    if st.button("Save", key="save"):
+        do_save(selected_per_row.items())
+#    st.button("Speichern der Ergebnisse!", on_click=do_save(selected_per_row.items()))
+st.write(f"**Anzahl der aktivierten Checkboxen:** {selected_count}")
+
+# Zeige die aktivierte Checkbox pro Spalte
+st.header("Auswahl:")
+for column_name, row_label in selected_per_row.items():  # Iteriere durch alle Spalten
+    st.write(f"{SHORTS[column_name].value}: \t{row_label:<25}")
