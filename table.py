@@ -9,8 +9,8 @@ bob = Char("Bob", 1)
 
 # Spaltennamen aus dem Enum extrahieren
 columns = [short.name for short in SHORTS]
-
 row_labels = []
+
 # Benutzerdefinierte Zeilenbeschriftung
 if "row_labels" not in st.session_state:
     st.session_state.row_labels = []
@@ -68,8 +68,21 @@ st.write(f"Durchschnitt: {avg} ({avg-60:.1f})")
 # Kopfzeile der Tabelle anzeigen
 header_cols = st.columns(len(columns) + 1)  # +1 für die Zeilenbeschriftung
 header_cols[0].write("Würfe")  # Erste Spalte für Zeilenbeschriftungen
+job_markings = bob.job.prime_stats
+dev_markings = ["CO", "AG", "SD", "ME", "RE"]
+
 for col, column_name in zip(header_cols[1:], columns):
-    if column_name in ["ST", "CO"]:  # Bedingung für spezielle Spalten
+    if column_name in job_markings and column_name in dev_markings:  # Bedingung für spezielle Spalten
+        col.markdown(
+            f'<span style="color:#0000cc; font-weight:bold;">{column_name} &#x2B06; </span>&#9734;',
+            unsafe_allow_html=True,
+        )
+    elif column_name in dev_markings:  # Bedingung für spezielle Spalten
+        col.markdown(
+            f'<span style="color:#0000cc; font-weight:bold;">{column_name} </span>&#9734;',
+            unsafe_allow_html=True,
+        )
+    elif column_name in job_markings:  # Bedingung für spezielle Spalten
         col.markdown(
             f'<span style="color:#0000cc; font-weight:bold;">{column_name} &#x2B06;</span>',
             unsafe_allow_html=True,
@@ -127,4 +140,7 @@ st.write(f"**Anzahl der aktivierten Checkboxen:** {selected_count}")
 # Zeige die aktivierte Checkbox pro Spalte
 st.header("Auswahl:")
 for column_name, row_label in selected_per_row.items():  # Iteriere durch alle Spalten
-    st.write(f"{SHORTS[column_name].value}: \t{row_label:<25}")
+    if column_name in job_markings and row_label < 90:
+        st.write(f"{SHORTS[column_name].value}: \t{row_label:<25} wird auf 90 angehoben")        
+    else:
+        st.write(f"{SHORTS[column_name].value}: \t{row_label:<25}")
