@@ -26,20 +26,26 @@ def do_max(collection):
         #print(f"is: {c}")
     
 # save Button-Function
-def do_save(selected_items):
+def do_save(selected_items, job_stats):
     st.write("folgende Werte gespeichter:")
     my_collection = []
     
     for column_name, row_label in selected_items:
         if row_label:
-            my_collection.append(f"{column_name}: {row_label}")
-            bob.set_stat_value(column_name, row_label)
+            if column_name in job_stats:
+                print("90", column_name)
+                my_collection.append(f"{column_name}: {90}")
+                bob.set_stat_value(column_name, 90)
+            else:
+                print("other", column_name)
+                my_collection.append(f"{column_name}: {row_label}")
+                bob.set_stat_value(column_name, row_label)
             #print(bob)
         else:
             my_collection.append(f"{column_name}: Keine Auswahl")
     st.write(str(my_collection))
-    if st.button("roll Max >>", key="max"):
-        do_max(my_collection)
+#    if st.button("roll Max >>", key="max"):
+#        do_max(my_collection)
 
 # Funktion, um den Zustand zu prüfen und nur eine Checkbox pro Zeile/Spalte zuzulassen
 def enforce_single_selection(row_idx, col_idx):
@@ -128,19 +134,23 @@ for col_idx, column_name in enumerate(columns):  # Iteriere über alle Spalten
     if selected_row is not None:
         selected_per_row[column_name] = selected_row
     else:
-        selected_per_row[column_name] = "Keine Auswahl"
+        selected_per_row[column_name] = "    ---"
         
 # Zeige die Anzahl der aktivierten Checkboxen
 if selected_count == 10:
     if st.button("Save", key="save"):
-        do_save(selected_per_row.items())
+        do_save(selected_per_row.items(), job_markings)
 #    st.button("Speichern der Ergebnisse!", on_click=do_save(selected_per_row.items()))
 st.write(f"**Anzahl der aktivierten Checkboxen:** {selected_count}")
 
 # Zeige die aktivierte Checkbox pro Spalte
 st.header("Auswahl:")
 for column_name, row_label in selected_per_row.items():  # Iteriere durch alle Spalten
-    if column_name in job_markings and row_label < 90:
-        st.write(f"{SHORTS[column_name].value}: \t{row_label:<25} wird auf 90 angehoben")        
-    else:
-        st.write(f"{SHORTS[column_name].value}: \t{row_label:<25}")
+    try:
+        row_label_int = int(row_label)  # Versuch, row_label in eine Ganzzahl umzuwandeln
+        if column_name in job_markings and row_label_int < 90:
+            st.write(f"{SHORTS[column_name].value}: \t{row_label:<25} wird auf 90 angehoben")        
+        else:
+            st.write(f"{SHORTS[column_name].value}: \t{row_label:<25}")
+    except ValueError:
+        st.write(f"kein Wert für {SHORTS[column_name].value}: {row_label}")
