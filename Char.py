@@ -4,23 +4,12 @@ from Stat import Stat
 from Job import Job
 import pandas as pd
 
-
-def create_empty_set(self):
-    for s in SHORTS.SHORTS:
-        self.Stats.append(Stat(str(s.name), 0))
-
-def create_random_set(self):
-    # minimum 20
-    for s in SHORTS.SHORTS:
-        self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
-
-
 class Char:
     def __init__(self, name: str, age: int, job: str = "Berufsloser"):
         self.name = name
         self.age = age
         self.Stats = []  # Stats ist eine Liste von Stat-Instanzen
-        create_empty_set(self)
+        self.create_empty_set()
         self.job = Job(job);
 #        for s in SHORTS.SHORTS:
 #            self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
@@ -45,6 +34,16 @@ class Char:
             index.append(str(s.name))
         return pd.DataFrame(data, index=index)
     
+
+    def create_empty_set(self):
+        for s in SHORTS.SHORTS:
+            self.Stats.append(Stat(str(s.name), 0))
+
+    def create_random_set(self):
+        # minimum 20
+        for s in SHORTS.SHORTS:
+            self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
+
     def set_stat_value(self, stat_short:str, value:int):
         for s in self.Stats:
             if s.name == stat_short:

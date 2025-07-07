@@ -43,7 +43,12 @@ def do_save(selected_items, job_stats):
             #print(bob)
         else:
             my_collection.append(f"{column_name}: Keine Auswahl")
-    st.write(str(my_collection))
+            
+    mySum = 0
+    for s in bob.Stats:
+        mySum += s.value
+    st.write(f"{str(my_collection)}")
+    st.write(f"neuer Durchschnitt: {mySum/10}")
 #    if st.button("roll Max >>", key="max"):
 #        do_max(my_collection)
 
@@ -78,19 +83,22 @@ job_markings = bob.job.prime_stats
 dev_markings = ["CO", "AG", "SD", "ME", "RE"]
 
 for col, column_name in zip(header_cols[1:], columns):
-    if column_name in job_markings and column_name in dev_markings:  # Bedingung für spezielle Spalten
+    if column_name in job_markings and column_name in dev_markings:  
+        # Dev-Stat UND Job-Stat
         col.markdown(
             f'<span style="color:#0000cc; font-weight:bold;">{column_name} &#x2B06; </span>&#9734;',
             unsafe_allow_html=True,
         )
-    elif column_name in dev_markings:  # Bedingung für spezielle Spalten
+    elif column_name in dev_markings:  
+        # Dev-Stat
         col.markdown(
             f'<span style="color:#0000cc; font-weight:bold;">{column_name} </span>&#9734;',
             unsafe_allow_html=True,
         )
-    elif column_name in job_markings:  # Bedingung für spezielle Spalten
+    elif column_name in job_markings:  
+        # Job-Stat
         col.markdown(
-            f'<span style="color:#0000cc; font-weight:bold;">{column_name} &#x2B06;</span>',
+            f'<span style="color:#00cc00; font-weight:bold;">{column_name} &#x2B06;</span>',
             unsafe_allow_html=True,
         )
     else:
