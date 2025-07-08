@@ -8,6 +8,7 @@ def char_stats_to_dataframe(char_obj):
     data = {
         "Name": [],
         "Value": [],
+        "MAX": [],
         "Bonus": [],
         "Bonus-Race": [],
         "Total Bonus": [],
@@ -15,6 +16,7 @@ def char_stats_to_dataframe(char_obj):
     for stat in char_obj.Stats:
         data["Name"].append(SHORTS[stat.name].value)
         data["Value"].append(stat.value)
+        data["MAX"].append(stat.max_value)
         data["Bonus"].append(stat.bonus)
         data["Bonus-Race"].append(stat.bonus_race)
         data["Total Bonus"].append(stat.total)
@@ -35,3 +37,5 @@ st.write("Dies ist eine Tabelle mit den Statistiken des Charakters.")
 
 # Zeige den DataFrame in Streamlit an
 st.dataframe(df.set_index("Name"))
+
+st.button("Roll Max")

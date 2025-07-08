@@ -46,6 +46,11 @@ class Char:
         # minimum 20
         for s in SHORTS.SHORTS:
             self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
+    
+    def roll_all_max(self):
+        # function to invoke max-values for all Stats
+        for m in self.Stats:
+            m.set_max_value(m)
 
     def set_stat_value(self, stat_short:str, value:int):
         for s in self.Stats:
@@ -53,10 +58,7 @@ class Char:
                 print(f"({stat_short}/{value}) for: {s.name}")
                 s.value = value
                 print(f"(got: {s.value}")
-
                 
-
-
 if __name__ == "__main__":
     # Example usage
     james = Char("James", 25)

@@ -13,7 +13,7 @@ class Stat:
     def __init__(self, name:str, value:int):
         self.name = name
         self.value = value
-        self.max_value = value
+        self.max_value = self.set_max_value(value)
         self.bonus = get_bonus(self.value)
         self.bonus_race = 0
         self.total = self.bonus + self.bonus_race
@@ -26,6 +26,14 @@ class Stat:
         to_string += f"Total bonus:  {self.total}\n"
         to_string += f"Bonus:        {self.bonus}\n"
         return to_string
+    
+    def set_max_value(self, value:int) -> int:
+        return_value = value
+        return return_value
+
+    def update_max_value(self, value:int) -> int:
+        return_value = value
+        return return_value
 
 if __name__ == "__main__":
     # Example usage
