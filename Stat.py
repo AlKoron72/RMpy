@@ -1,11 +1,11 @@
 import Bonus
 import SHORTS
 from Rolls import Rolls
+from tables import max_stats
 
 def get_bonus(for_value:int) -> int:
     bonus = Bonus.standard_bonus(for_value)
     return bonus
-
 
 class Stat:
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
@@ -21,6 +21,7 @@ class Stat:
     def __str__(self):
         to_string = f"Abbreviation: {self.name}\n"
         to_string += f"Value:        {self.value}\n"
+        to_string += f"Max-Value:    {self.max_value}\n"
         to_string += f"Bonus:        {self.bonus}\n"
         to_string += f"Bonus-Race:   {self.bonus_race}\n"
         to_string += f"Total bonus:  {self.total}\n"
@@ -29,7 +30,12 @@ class Stat:
     
     def set_max_value(self, value:int) -> int:
         return_value = value
-        return return_value
+        
+        # init Rolls-Class and uses it to roll
+        roller = Rolls(100)
+        roll_max = roller.roll()
+        # uses the roll, to look up in table and return the max-Value (pot. Value)
+        return max_stats.return_max(value, roll_max)
 
     def update_max_value(self, value:int) -> int:
         return_value = value

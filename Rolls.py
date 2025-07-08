@@ -10,7 +10,7 @@ Attributes:
 """
 
 class Rolls:
-    def __init__(self, sides:int, minimum = 0, open_roll:bool = False, fumble:int = 0):
+    def __init__(self, sides:int, minimum:int = 0, open_roll:bool = False, fumble:int = 0):
         self.sides = sides
         self.minimum = minimum
         self.open_roll = open_roll
