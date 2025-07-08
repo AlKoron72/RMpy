@@ -5,11 +5,14 @@ from Job import Job
 import pandas as pd
 
 class Char:
-    def __init__(self, name: str, age: int, job: str = "Berufsloser"):
+    def __init__(self, name: str, age: int, job: str = "Berufsloser", random_set: bool = False):
         self.name = name
         self.age = age
         self.Stats = []  # Stats ist eine Liste von Stat-Instanzen
-        self.create_empty_set()
+        if random_set:
+            self.create_random_set()
+        else:
+            self.create_empty_set()
         self.job = Job(job);
 #        for s in SHORTS.SHORTS:
 #            self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
