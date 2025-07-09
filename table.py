@@ -33,14 +33,13 @@ def do_save(selected_items, job_stats):
     for column_name, row_label in selected_items:
         if row_label:
             if column_name in job_stats:
-                print("90", column_name)
+                # for job stats
                 my_collection.append(f"{column_name}: {90}")
                 bob.set_stat_value(column_name, 90)
             else:
-                print("other", column_name)
+                # all the non-job-stats
                 my_collection.append(f"{column_name}: {row_label}")
                 bob.set_stat_value(column_name, row_label)
-            #print(bob)
         else:
             my_collection.append(f"{column_name}: Keine Auswahl")
             
