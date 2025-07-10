@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from Char import Char
 from SHORTS import SHORTS
+import os
 
 # Funktion, um die Statistiken eines Char-Objekts in einen DataFrame zu konvertieren
 def char_stats_to_dataframe(char_obj):
@@ -39,3 +40,12 @@ st.write("Dies ist eine Tabelle mit den Statistiken des Charakters.")
 st.dataframe(df.set_index("Name"))
 
 st.button("Roll Max")
+
+def get_job_classes(directory="jobs"):
+    # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
+    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py")]
+
+job_classes = get_job_classes()
+print(job_classes)
+
+selected_job = st.selectbox("Wähle eine Klasse:", job_classes)
