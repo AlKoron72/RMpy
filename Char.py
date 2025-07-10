@@ -3,6 +3,7 @@ from Rolls import Rolls
 from Stat import Stat
 from Job import Job
 import pandas as pd
+import importlib
 
 class Char:
     def __init__(self, name: str, age: int, job: str = "Berufsloser", random_set: bool = False):
@@ -13,8 +14,14 @@ class Char:
             self.create_random_set()
         else:
             self.create_empty_set()
-        self.job = Job(job);
-#        for s in SHORTS.SHORTS:
+        # sets job from library jobs
+        if job != "Berufsloser":
+            # Dynamisches Importieren des Job-Moduls und der Klasse
+            module = importlib.import_module(f"jobs.{job}")
+            job_class = getattr(module, job)
+            self.job = job_class(job)
+        else:
+            self.job = job  # String "Berufsloser"#        for s in SHORTS.SHORTS:
 #            self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
 
     def __str__(self):

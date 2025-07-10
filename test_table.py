@@ -23,8 +23,17 @@ def char_stats_to_dataframe(char_obj):
         data["Total Bonus"].append(stat.total)
     return pd.DataFrame(data)
 
+def get_job_classes(directory="jobs"):
+    # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
+    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
+
+job_classes = get_job_classes()
+
+# Dropdown-Menu from folder jobs content
+selected_job = st.selectbox("Wähle eine Klasse:", job_classes)
+
 # Erstelle ein Beispiel-Charakter-Objekt
-char = Char(name="Bob Mustermann", age=30, job="Krieger", random_set=True)
+char = Char(name="Bob Mustermann", age=30, job=selected_job, random_set=True)
 
 # Fülle die Statistiken zufällig (optional, falls benötigt)
 #char.create_random_set()
@@ -33,19 +42,10 @@ char = Char(name="Bob Mustermann", age=30, job="Krieger", random_set=True)
 df = char_stats_to_dataframe(char)
 
 # Streamlit-Anwendung
-st.title("Charakterstatistiken 2")
+st.title("Charakterstatistiken: {}".format(selected_job))
 st.write("Dies ist eine Tabelle mit den Statistiken des Charakters.")
 
 # Zeige den DataFrame in Streamlit an
 st.dataframe(df.set_index("Name"))
 
 st.button("Roll Max")
-
-def get_job_classes(directory="jobs"):
-    # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
-    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py")]
-
-job_classes = get_job_classes()
-print(job_classes)
-
-selected_job = st.selectbox("Wähle eine Klasse:", job_classes)

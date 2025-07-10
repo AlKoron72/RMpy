@@ -21,5 +21,5 @@ class Heiler:
 if __name__ == "__main__":
     # Example usage
     #myValue = Rolls(100).roll()
-    test = Alchemist("Heiler")
+    test = Heiler("Heiler")
     print(Heiler)

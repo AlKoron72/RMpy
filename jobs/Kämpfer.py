@@ -2,7 +2,7 @@ import Bonus
 import SHORTS
 from Rolls import Rolls
 
-class Kaempfer:
+class Kämpfer:
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
 
     def get_prime(self, job_str:str) -> str:
@@ -21,5 +21,5 @@ class Kaempfer:
 if __name__ == "__main__":
     # Example usage
     #myValue = Rolls(100).roll()
-    test = Kaempfer("Kämpfer")
+    test = Kämpfer("Kämpfer")
     print(test)

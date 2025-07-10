@@ -1,11 +1,20 @@
-#import random
+import os
 import streamlit as st
 from SHORTS import SHORTS
 from Rolls import Rolls
 from Char import Char
 
 roller = Rolls(100, minimum=20)
-bob = Char("Bob", 1)
+
+def get_job_classes(directory="jobs"):
+    # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
+    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
+
+job_classes = get_job_classes()
+# Dropdown-Menu from folder jobs content
+selected_job = st.selectbox("Wähle eine Klasse:", job_classes)
+
+bob = Char("Bob", 1, job=selected_job)
 
 # Spaltennamen aus dem Enum extrahieren
 columns = [short.name for short in SHORTS]
@@ -34,8 +43,8 @@ def do_save(selected_items, job_stats):
         if row_label:
             if column_name in job_stats:
                 # for job stats
-                my_collection.append(f"{column_name}: {90}")
-                bob.set_stat_value(column_name, 90)
+                my_collection.append(f"{column_name}: {max(90, row_label)}")
+                bob.set_stat_value(column_name, max(90, row_label))
             else:
                 # all the non-job-stats
                 my_collection.append(f"{column_name}: {row_label}")
@@ -48,8 +57,10 @@ def do_save(selected_items, job_stats):
         mySum += s.value
     st.write(f"{str(my_collection)}")
     st.write(f"neuer Durchschnitt: {mySum/10}")
-#    if st.button("roll Max >>", key="max"):
-#        do_max(my_collection)
+    # saving bob in session 
+    st.session_state["saved"] = True  # <-- Save-FLAG setzen
+    st.session_state["bob"] = bob     # <-- Bob in den session_state speichern
+
 
 # Funktion, um den Zustand zu prüfen und nur eine Checkbox pro Zeile/Spalte zuzulassen
 def enforce_single_selection(row_idx, col_idx):
@@ -147,7 +158,17 @@ for col_idx, column_name in enumerate(columns):  # Iteriere über alle Spalten
 if selected_count == 10:
     if st.button("Save", key="save"):
         do_save(selected_per_row.items(), job_markings)
-#    st.button("Speichern der Ergebnisse!", on_click=do_save(selected_per_row.items()))
+
+# "Übernehmen"-Button NUR anzeigen, wenn gespeichert wurde
+if st.session_state.get("saved", False):
+    if st.button("Übernehmen"):
+        st.session_state["go_to_test"] = True  # Flag für Seitenwechsel setzen
+
+# Seitenwechsel am Ende der Seite prüfen (damit nicht im Button-Callback!)
+if st.session_state.get("go_to_test", False):
+    # Hiermit wird bei Streamlit >=1.22.0 die Seite gewechselt
+    st.switch_page("pages/test.py") 
+
 st.write(f"**Anzahl der aktivierten Checkboxen:** {selected_count}")
 
 # Zeige die aktivierte Checkbox pro Spalte
