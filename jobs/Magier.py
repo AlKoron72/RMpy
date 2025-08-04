@@ -1,6 +1,6 @@
-import Bonus
-import SHORTS
-from Rolls import Rolls
+#import Bonus
+#import SHORTS
+#from Rolls import Rolls
 
 class Magier:
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
@@ -23,3 +23,4 @@ if __name__ == "__main__":
     #myValue = Rolls(100).roll()
     test = Magier("Magier")
     print(test)
+    print(f"locattion {__file__}\n")
