@@ -14,7 +14,7 @@ job_classes = get_job_classes()
 # Dropdown-Menu from folder jobs content
 selected_job = st.selectbox("Wähle eine Klasse:", job_classes)
 
-bob = Char("Bob", 1, job=selected_job)
+bob = Char("Bob", 19, job=selected_job)
 
 # Spaltennamen aus dem Enum extrahieren
 columns = [short.name for short in SHORTS]
@@ -55,6 +55,7 @@ def do_save(selected_items, job_stats):
     mySum = 0
     for s in bob.Stats:
         mySum += s.value
+        s.set_max_value(0)
     st.write(f"{str(my_collection)}")
     st.write(f"neuer Durchschnitt: {mySum/10}")
     # saving bob in session 

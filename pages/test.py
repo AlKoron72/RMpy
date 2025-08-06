@@ -30,8 +30,11 @@ def get_job_classes(directory="jobs"):
 # Prüfe, ob Bob übergeben wurde
 if "bob" in st.session_state:
     bob = st.session_state["bob"]
+    #print(bob.get)
+    
+    
     st.write("Bob wurde übergeben:")
-    st.write(str(bob))
+    #st.write(str(bob))
 
     # Konvertiere die Statistiken in einen DataFrame
     df = char_stats_to_dataframe(bob)
@@ -43,7 +46,10 @@ if "bob" in st.session_state:
     # Zeige den DataFrame in Streamlit an
     st.dataframe(df.set_index("Name"))
 
-    st.button("Roll Max")
-
+    if st.button("Roll Max"):
+        #st.write(bob.Stats[0])
+        for stat in bob.Stats:
+            stat.max_value = stat.set_max_value(stat.value)
+            st.write(f"{stat.name}: {stat.value} / {stat.max_value}")
 else:
     st.write("Kein Charakter übergeben.")

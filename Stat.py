@@ -13,7 +13,7 @@ class Stat:
     def __init__(self, name:str, value:int):
         self.name = name
         self.value = value
-        self.max_value = self.set_max_value(value)
+        self.max_value = value
         self.bonus = get_bonus(self.value)
         self.bonus_race = 0
         self.total = self.bonus + self.bonus_race
@@ -34,8 +34,13 @@ class Stat:
         # init Rolls-Class and uses it to roll
         roller = Rolls(100)
         roll_max = roller.roll()
+        if roll_max > value:
+            self.max_value = roll_max
+        else:
+            self.max_value = value
         # uses the roll, to look up in table and return the max-Value (pot. Value)
-        return max_stats.return_max(value, roll_max)
+        # return max_stats.return_max_simple(value, roll_max)
+        return return_value
 
     def update_max_value(self, value:int) -> int:
         return_value = value

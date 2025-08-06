@@ -1,6 +1,6 @@
 #import Bonus
 #import SHORTS
-#from Rolls import Rolls
+#from ..Rolls import Rolls
 
 class Magier:
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")

@@ -1,3 +1,13 @@
+def return_max_simple(value: int, roll: int) -> int:
+    # Breich doppelte 100
+    if value == 100 and roll == 100:
+        return 101
+    
+    if roll > value:
+        return roll
+    else:
+        return value
+
 def return_max(value: int, roll: int) -> int:
     # Breich doppelte 100
     if value == 100 and roll == 100:
