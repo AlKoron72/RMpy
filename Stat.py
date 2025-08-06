@@ -13,7 +13,7 @@ class Stat:
     def __init__(self, name:str, value:int):
         self.name = name
         self.value = value
-        self.max_value = value
+        self.max_value = 0
         self.bonus = get_bonus(self.value)
         self.bonus_race = 0
         self.total = self.bonus + self.bonus_race

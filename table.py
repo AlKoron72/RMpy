@@ -55,7 +55,7 @@ def do_save(selected_items, job_stats):
     mySum = 0
     for s in bob.Stats:
         mySum += s.value
-        s.set_max_value(0)
+
     st.write(f"{str(my_collection)}")
     st.write(f"neuer Durchschnitt: {mySum/10}")
     # saving bob in session 

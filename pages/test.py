@@ -32,8 +32,24 @@ if "bob" in st.session_state:
     bob = st.session_state["bob"]
     #print(bob.get)
     
+    if st.button("Zeige Info-Box"):
+        st.info("Streamlit-Version: " + st.__version__)
+
+    
+    if st.button("Zeige Expander"):
+        with st.expander("Mehr Infos anzeigen"):
+            st.write("Hier stehen zusätzliche Details.")
+    
+    if st.button("Zeige Dialog"):
+        with st.dialog("Mein Dialog"):
+            st.write("Das ist ein modaler Dialog!")
     
     st.write("Bob wurde übergeben:")
+    st.text(f"Name:{bob.name:>23}")
+    st.text(f"Alter:{bob.age:>25}")
+    st.text(f"Beruf:{bob.job.name:>31}")
+    st.text(f"{bob.Stats[-1].name}:{bob.Stats[-1].max_value:>31}")
+
     #st.write(str(bob))
 
     # Konvertiere die Statistiken in einen DataFrame
@@ -49,7 +65,8 @@ if "bob" in st.session_state:
     if st.button("Roll Max"):
         #st.write(bob.Stats[0])
         for stat in bob.Stats:
-            stat.max_value = stat.set_max_value(stat.value)
+            stat.set_max_value(0)
+#            stat.max_value = stat.set_max_value(stat.value)
             st.write(f"{stat.name}: {stat.value} / {stat.max_value}")
 else:
     st.write("Kein Charakter übergeben.")
