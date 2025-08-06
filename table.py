@@ -6,15 +6,29 @@ from Char import Char
 
 roller = Rolls(100, minimum=20)
 
+st.session_state["go_to_test"] = False  # Flag für Seitenwechsel setzen
+
+
 def get_job_classes(directory="jobs"):
     # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
     return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
 
-job_classes = get_job_classes()
-# Dropdown-Menu from folder jobs content
-selected_job = st.selectbox("Wähle eine Klasse:", job_classes)
+def get_races(directory="races"):
+    # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
+    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
 
-bob = Char("Bob", 19, job=selected_job)
+job_classes = get_job_classes()
+races = get_races()
+
+# Spalten anlegen
+col1, col2, col3 = st.columns(3)
+
+# Dropdown-Menus from folder jobs/races content
+selected_job = col1.selectbox("Wähle eine Klasse:", job_classes)
+selected_race = col2.selectbox("Wähle eine Volk:", races, index=1)
+col3.write("some more stuff")
+
+bob = Char("Bob", 19, job=selected_job, race=selected_race)
 
 # Spaltennamen aus dem Enum extrahieren
 columns = [short.name for short in SHORTS]
@@ -178,8 +192,8 @@ for column_name, row_label in selected_per_row.items():  # Iteriere durch alle S
     try:
         row_label_int = int(row_label)  # Versuch, row_label in eine Ganzzahl umzuwandeln
         if column_name in job_markings and row_label_int < 90:
-            st.write(f"{SHORTS[column_name].value}: \t{row_label:<25} wird auf 90 angehoben")        
+            st.warning(f"{SHORTS[column_name].value}: \t{row_label:<25} wird auf 90 angehoben")        
         else:
-            st.write(f"{SHORTS[column_name].value}: \t{row_label:<25}")
+            st.write(f"- {SHORTS[column_name].value}: \t{row_label:<25}")
     except ValueError:
         st.write(f"kein Wert für {SHORTS[column_name].value}: {row_label}")

@@ -6,7 +6,8 @@ import pandas as pd
 import importlib
 
 class Char:
-    def __init__(self, name: str, age: int, job: str = "Berufsloser", random_set: bool = False):
+    def __init__(self, name: str, age: int, job: str = "Berufsloser", random_set: bool = False, race: str = "Mensch"):
+        self.race = race
         self.name = name
         self.age = age
         self.Stats = []  # Stats ist eine Liste von Stat-Instanzen
@@ -59,6 +60,9 @@ class Char:
         for m in self.Stats:
             m.set_max_value(m)
 
+    def set_race(self, race: str):
+        self.race = race
+        
     def set_stat_value(self, stat_short:str, value:int):
         for s in self.Stats:
             if s.name == stat_short:
