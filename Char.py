@@ -6,9 +6,11 @@ import pandas as pd
 import importlib
 
 class Char:
-    def __init__(self, name: str, age: int, job: str = "Berufsloser", random_set: bool = False, race: str = "Mensch"):
+    def __init__(self, name: str, age: int, more_name:str = "", job: str = "Berufsloser", random_set: bool = False, race: str = "Mensch"):
+        self.id = 0
         self.race = race
         self.name = name
+        self.more_name = more_name
         self.age = age
         self.Stats = []  # Stats ist eine Liste von Stat-Instanzen
         if random_set:
@@ -69,7 +71,17 @@ class Char:
                 print(f"({stat_short}/{value}) for: {s.name}")
                 s.value = value
                 print(f"(got: {s.value}")
-                
+    
+    def get_value_for_stat(self, short: str, max: bool = False) -> int:
+        return_value = 0
+        for stat in self.Stats:
+            if stat.name == short:
+                if max:
+                    return_value = stat.max_value
+                else:
+                    return_value = stat.value
+        return return_value
+    
 if __name__ == "__main__":
     # Example usage
     james = Char("James", 25)

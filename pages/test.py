@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 from Char import Char
 from SHORTS import SHORTS
-import time
+from Rolls import Rolls
+
+roller = Rolls(100)
 
 if "show_info" not in st.session_state:
     st.session_state["show_info"] = False
@@ -10,7 +12,7 @@ if "info_time" not in st.session_state:
     st.session_state["info_time"] = 0
 
 # Funktion, um die Statistiken eines Char-Objekts in einen DataFrame zu konvertieren
-def char_stats_to_dataframe(char_obj):
+def char_stats_to_dataframe(char_obj) -> pd.DataFrame:
     data = {
         "Name": [],
         "Value": [],
@@ -32,40 +34,38 @@ def get_job_classes(directory="jobs"):
     # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
     return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
 
+def get_max_value_for(short: str) -> int:
+    searched_for = 0
+    for stat in dude.Stats:
+        if stat == short:
+            searched_for = stat.max_value
+    return searched_for
+
+@st.dialog("Do your farty things")
+def do_dialog(long_str:str, short_str:str):
+    st.write(f"{long_str} ({short_str})")
+    st.write(f"rolled a {roller.roll()}")
+    if st.button("got it!"):
+        st.rerun()
 
 # Prüfe, ob Bob übergeben wurde
 if "bob" in st.session_state:
-    bob = st.session_state["bob"]
+    dude = st.session_state["bob"]
     #print(bob.get)
+    st.write(f"{dude.name} wurde übergeben:")
     
-    if st.button("Zeige Info-Box für 3 Sekunden"):
-        st.session_state["show_info"] = True
-        st.session_state["info_time"] = time.time()
-
-    if st.session_state["show_info"]:
-        st.info("Dies ist eine temporäre Info-Box.")
-        if time.time() - st.session_state["info_time"] > 3:
-            st.session_state["show_info"] = False
-            st.rerun()
-        
-    if st.button("Zeige Info-Box"):
-        st.info("Streamlit-Version: " + st.__version__)
-
-    
-    if st.button("Zeige Expander"):
-        with st.expander("Mehr Infos anzeigen"):
-            st.write("Hier stehen zusätzliche Details.")
-
-    st.write("Bob wurde übergeben:")
-    st.text(f"Name:{bob.name:>23}")
-    st.text(f"Alter:{bob.age:>25}")
-    st.text(f"Beruf:{bob.job.name:>31}")
-    st.text(f"{bob.Stats[-1].name}:{bob.Stats[-1].max_value:>31}")
+    with st.expander("Mehr Infos anzeigen"):
+        st.text(f"Hier stehen zusätzliche Details.\nAlter:    {dude.age}\nVolk:     {dude.race}")
+        st.text(f"Name:{dude.name:>23}")
+        st.text(f"Alter:{dude.age:>25}")
+        st.text(f"Beruf:{dude.job.name:>31}")
+        st.text(f"{dude.Stats[-1].name}:{dude.Stats[-1].max_value:>31}")
+        st.text(f"Stats of {dude.name}: {dude}")
 
     #st.write(str(bob))
 
     # Konvertiere die Statistiken in einen DataFrame
-    df = char_stats_to_dataframe(bob)
+    df = char_stats_to_dataframe(dude)
 
     # Streamlit-Anwendung
     st.title("Charakterstatistiken:")
@@ -74,11 +74,38 @@ if "bob" in st.session_state:
     # Zeige den DataFrame in Streamlit an
     st.dataframe(df.set_index("Name"))
 
-    if st.button("Roll Max"):
+    if st.button("Roll Max for all 10"):
         #st.write(bob.Stats[0])
-        for stat in bob.Stats:
+        for stat in dude.Stats:
             stat.set_max_value(0)
 #            stat.max_value = stat.set_max_value(stat.value)
             st.write(f"{stat.name}: {stat.value} / {stat.max_value}")
+
+    button_names = list(SHORTS)
+    pill_names = list()
+    for pn in SHORTS:
+        if dude.get_value_for_stat(pn, True) == 0:
+            pill_names.append(pn.name)
+    pill_selection = st.pills("Höchstwert Würfeln für", pill_names, selection_mode="multi")
+    st.markdown(f"Your selected options: {pill_selection}.")
+    
+    if st.button("Roll for your choice"):
+        if len(pill_selection) == 0:
+            st.markdown("nichts ausgewählt")
+        else:
+            for ps in pill_selection:
+                huh = get_max_value_for(ps)
+                st.markdown(f"{ps}: {huh} max")
+
+
+    cols = st.columns(len(button_names))
+    for i, (col, short) in enumerate(zip(cols, button_names)):
+        if get_max_value_for(str(short.name)) != 0:
+            st.write(f"value for {short.name} is {dude.Stats.get_max_value_for(short.name)}")
+        if col.button(short.name):
+            st.write(f"Button für {short.value} ({short.name}) geklickt!")
+            do_dialog(short.value, short.name)
+
+
 else:
     st.write("Kein Charakter übergeben.")
