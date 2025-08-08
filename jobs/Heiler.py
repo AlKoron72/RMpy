@@ -5,7 +5,7 @@ from Rolls import Rolls
 class Heiler:
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
 
-    def get_prime(self, job_str:str) -> str:
+    def get_prime(self, job_str:str) -> list[str]:
         shorts_list = ["IN", "ME"]
         return shorts_list
     

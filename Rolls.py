@@ -23,7 +23,7 @@ class Rolls:
                 f"fumble:<{self.fumble})")
 
     def roll(self):
-        result = random.randint(1, self.sides)  # Now properly 1 to sides inclusive
+        result = random.randint(1, self.sides)  # Now properly 1 to side inclusive
 
         # if minimum
         if result < self.minimum:
@@ -40,7 +40,7 @@ class Rolls:
         return result
 
 if __name__ == "__main__":
-    # Example usagetest = Rolls(100, open_roll=True, fumble=5)
+    # Example usage test = Rolls(100, open_roll=True, fumble=5)
     test_list = []
     test = Rolls(100, minimum=20, open_roll=True, fumble=2)
     for i in range(100):

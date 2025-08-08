@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from Char import Char
+from python.Lib import os
+#from Char import Char
 from SHORTS import SHORTS
 from Rolls import Rolls
 
@@ -34,10 +35,10 @@ def get_job_classes(directory="jobs"):
     # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
     return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
 
-def get_max_value_for(short: str) -> int:
+def get_max_value_for(short_str: str) -> int:
     searched_for = 0
     for stat in dude.Stats:
-        if stat == short:
+        if stat == short_str:
             searched_for = stat.max_value
     return searched_for
 

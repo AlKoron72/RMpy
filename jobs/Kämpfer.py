@@ -1,11 +1,11 @@
-import Bonus
-import SHORTS
-from Rolls import Rolls
+#import Bonus
+#import SHORTS
+#from Rolls import Rolls
 
 class Kämpfer:
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
 
-    def get_prime(self, job_str:str) -> str:
+    def get_prime(self, job_str:str) -> list[str]:
         shorts_list = ["ST", "CO"]
         return shorts_list
     

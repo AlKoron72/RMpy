@@ -10,17 +10,17 @@ st.session_state["go_to_test"] = False  # Flag für Seitenwechsel setzen
 
 
 def get_job_classes(directory="jobs"):
-    # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
+    # Listet alle py-Dateien im Verzeichnis auf, ohne die Endung .py
     return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
 
 def get_races(directory="races"):
-    # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
+    # Listet alle py-Dateien im Verzeichnis auf, ohne die Endung .py
     return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
 
 job_classes = get_job_classes()
 races = get_races()
 age_range = list(range(16, 999))
-age_range.append("anderes ...")
+age_range.append(0000)
 
 # Spalten anlegen
 col1, col2, col3 = st.columns(3)
@@ -59,7 +59,7 @@ def do_max(collection):
     
 # save Button-Function
 def do_save(selected_items, job_stats):
-    st.write("folgende Werte gespeichter:")
+    st.write("folgende Werte gespeicherter:")
     my_collection = []
     
     for column_name, row_label in selected_items:
@@ -102,6 +102,9 @@ def enforce_single_selection(row_idx, col_idx):
         for r in range(len(row_labels)):
             if r != row_idx:
                 st.session_state[f"{r}_{col_idx}"] = False
+
+    if current_key not in st.session_state:
+        return
 
 
 # Tabelle mit Checkboxen anzeigen
