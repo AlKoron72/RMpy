@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from python.Lib import os
+import os
 #from Char import Char
 from SHORTS import SHORTS
 from Rolls import Rolls
