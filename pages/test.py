@@ -32,7 +32,7 @@ def char_stats_to_dataframe(char_obj) -> pd.DataFrame:
     return pd.DataFrame(data)
 
 def get_job_classes(directory="jobs"):
-    # Listet alle .py-Dateien im Verzeichnis auf, ohne die Endung .py
+    # Listet alle py-Dateien im Verzeichnis auf, ohne die Endung .py
     return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
 
 def get_max_value_for(short_str: str) -> int:

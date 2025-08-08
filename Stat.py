@@ -1,7 +1,7 @@
 import Bonus
-import SHORTS
 from Rolls import Rolls
-from tables import max_stats
+# import SHORTS
+# from tables import max_stats
 
 def get_bonus(for_value:int) -> int:
     bonus = Bonus.standard_bonus(for_value)
@@ -38,11 +38,12 @@ class Stat:
             self.max_value = roll_max
         else:
             self.max_value = value
-        # uses the roll, to look up in table and return the max-Value (pot. Value)
+        # uses the roll to look up in the table and return the max-Value (pot. Value)
         # return max_stats.return_max_simple(value, roll_max)
         return return_value
 
-    def update_max_value(self, value:int) -> int:
+    @staticmethod
+    def update_max_value(value:int) -> int:
         return_value = value
         return return_value
 
