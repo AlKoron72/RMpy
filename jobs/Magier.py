@@ -11,7 +11,7 @@ class Magier(Job):
     
 if __name__ == "__main__":
     # Example usage
-    #myValue = Rolls(100).roll()
+    #myValue = Rolls(100).roll()c
     test = Magier("Magier")
     print(test)
     print(f"locattion {__file__}\n")
