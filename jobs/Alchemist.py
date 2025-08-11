@@ -4,8 +4,7 @@ class Alchemist(Job):
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
 
     def get_prime(self) -> list[str]:
-        shorts_list = ["RE", "EM"]
-        return shorts_list
+        return ["RE", "EM"]
     
     def get_spell_stat(self) -> str:
         return "IN"

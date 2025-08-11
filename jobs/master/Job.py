@@ -1,3 +1,13 @@
+'''
+this is a master class for all Jobs
+the jobs get extended by all Job-Classes in folder jobs,
+main functions get provided by this class
+---
+made by: Alexander Günther
+date: 08/2025
+'''
+
+
 class Job:
     # SHORTS = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
 
@@ -5,6 +15,9 @@ class Job:
         self.name = name
         self.prime_stats = self.get_prime()
         self.spell_stat = None  # Default: kein Spell-Attribut
+
+#    def get_skill_cost(self, name: str) -> list[int]:
+#        return Skill
 
     def get_spell_stat(self) -> str:
         return self.spell_stat
@@ -16,7 +29,7 @@ class Job:
     def __str__(self) -> str:
         to_string = f"Job:              {self.name}\n"
         to_string += f"Prime-Stats:      {self.prime_stats}\n"
-        to_string += f"Spell-Stat:       {self.spell_stat}\n"
+        to_string += f"Spell-Stat:       {self.get_spell_stat()}\n"
         return to_string
 
 if __name__ == "__main__":
