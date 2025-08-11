@@ -217,7 +217,7 @@ if st.session_state.get("go_to_test", False):
     st.switch_page("pages/test.py") 
 
 
-# Zeige die aktivierte Checkbox pro Spalte
+# Zeige die Auswahl und die Auswirkungen der Auswahl oben
 if selected_count > 0:
     st.header("Auswahl:")
     for column_name, row_label in selected_per_row.items():  # Iteriere durch alle Spalten
@@ -228,4 +228,4 @@ if selected_count > 0:
             else:
                 st.write(f"- {SHORTS[column_name].value}: \t{row_label:<25}")
         except ValueError:
-            st.write(f"kein Wert für {SHORTS[column_name].value}: {row_label}")
+            st.markdown(f"**kein Wert für:** {SHORTS[column_name].name} ({SHORTS[column_name].value})")

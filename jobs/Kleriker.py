@@ -1,8 +1,8 @@
-import Bonus
-import SHORTS
-from Rolls import Rolls
+#import Bonus
+#import SHORTS
+#from ..Rolls import Rolls
 
-class Heiler:
+class Magier:
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
 
     def get_prime(self, job_str:str) -> list[str]:
@@ -12,7 +12,7 @@ class Heiler:
     def __init__(self, name:str):
         self.name = name
         self.prime_stats = self.get_prime(name)
-        self.spell_stat = "EM"
+        self.spell_stat = "IN"
 
     def __str__(self) -> str:
         to_string = f"Job:              {self.name}\n"
@@ -22,5 +22,6 @@ class Heiler:
 if __name__ == "__main__":
     # Example usage
     #myValue = Rolls(100).roll()
-    test = Heiler("Heiler")
-    print(Heiler)
+    test = Magier("Magier")
+    print(test)
+    print(f"locattion {__file__}\n")

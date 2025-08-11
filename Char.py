@@ -4,6 +4,7 @@ from Stat import Stat
 #from Job import Job
 import pandas as pd
 import importlib
+from tables import dev_points, spell_points
 
 class Char:
     def __init__(self, name: str, age: int, more_name:str = "", job: str = "Berufsloser", random_set: bool = False, race: str = "Mensch"):
@@ -25,6 +26,10 @@ class Char:
             self.job = job_class(job)
         else:
             self.job = job  # String "Berufsloser"#        for s in SHORTS.SHORTS:
+        self.hit_points_base:int = 1
+        self.hit_points_total:int = self.hit_points_base
+        self.hit_points_temp:int = self.hit_points_base
+        self.spell_points:int = 0
 #            self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
 
     def __str__(self):

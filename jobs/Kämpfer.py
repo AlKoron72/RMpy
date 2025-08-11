@@ -12,6 +12,7 @@ class Kämpfer:
     def __init__(self, name:str):
         self.name = name
         self.prime_stats = self.get_prime(name)
+        self.spell_stat = None
 
     def __str__(self) -> str:
         to_string = f"Job:              {self.name}\n"
