@@ -193,12 +193,11 @@ def set_list(active: bool):
     st.rerun()
 
 st.write(f"**Anzahl der aktivierten Checkboxen:** {selected_count}")
-'''
-if st.button("Zufallsverteilung"):
-    st.warning("nichts dem Zufall überlassen")
-    set_list(True)
-    
-'''
+
+#if st.button("Zufallsverteilung"):
+#    st.warning("nichts dem Zufall überlassen")
+#    set_list(True)
+
 # Zeige die Anzahl der aktivierten Checkboxen
 if selected_count == 10:
     if st.button("Save", key="save"):

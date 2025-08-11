@@ -1,24 +1,14 @@
-#import Bonus
-#import SHORTS
-#from ..Rolls import Rolls
+from jobs.master.Job import Job
 
-class Magier:
+class Magier(Job):
     # standardShorts = ("ST", "QU", "PR", "IN", "EM", "SD", "RE", "ME", "CO", "AG")
 
-    def get_prime(self, job_str:str) -> list[str]:
-        shorts_list = ["RE", "EM"]
-        return shorts_list
+    def get_spell_stat(self) -> str:
+        return "EM"
     
-    def __init__(self, name:str):
-        self.name = name
-        self.prime_stats = self.get_prime(name)
-        self.spell_stat = "EM"
-
-    def __str__(self) -> str:
-        to_string = f"Job:              {self.name}\n"
-        to_string += f"Prime-Stats:      {self.prime_stats}\n"
-        return to_string
-
+    def get_prime(self) -> list[str]:
+        return ["RE", "EM"]
+    
 if __name__ == "__main__":
     # Example usage
     #myValue = Rolls(100).roll()

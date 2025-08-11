@@ -30,6 +30,7 @@ class Char:
         self.hit_points_total:int = self.hit_points_base
         self.hit_points_temp:int = self.hit_points_base
         self.spell_points:int = 0
+        self.spell_points_temp:int = self.spell_points
 #            self.Stats.append(Stat(str(s.name), Rolls(100, minimum=20).roll()))
 
     def __str__(self):
