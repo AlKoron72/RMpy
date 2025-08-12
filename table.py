@@ -61,7 +61,7 @@ def do_max(collection):
     
 # save Button-Function
 def do_save(selected_items, job_stats):
-    st.write("folgende Werte gespeicherter:")
+    st.write("folgende Werte gespeichert:")
     my_collection = []
     
     for column_name, row_label in selected_items:
@@ -252,8 +252,25 @@ if selected_count > 0:
         try:
             row_label_int = int(row_label)  # Versuch, row_label in eine Ganzzahl umzuwandeln
             if column_name in job_markings and row_label_int < 90:
-                st.info(f"{SHORTS[column_name].value}: \t{row_label:<25} wird auf 90 angehoben", icon="🚨")
-                st.write("- is")
+                st.info(f"**{SHORTS[column_name].value}:** \t{row_label:<25} wird auf 90 angehoben", icon="🚨")
+                if column_name in dev_markings:
+                    text_b = f"sorgt für **{dev_points.get_dev_points(90)}** Entwicklungspunkte"
+                    text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(90)}** aus dem Wert"
+                    text_d = f"anstatt der {dev_points.get_dev_points(row_label)} für {row_label}"
+                    text_e = f"anstatt der {Bonus.standard_bonus(row_label)} für {row_label}"
+                    st.write(f"""
+                            - - {text_b}
+                                - {text_d}
+                            - - {text_c}
+                                - {text_e}
+                            """)
+                else:
+                    text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(90)}** aus dem Wert"
+                    text_e = f"anstatt der {Bonus.standard_bonus(row_label)} für {row_label}"
+                    st.write(f"""
+                            - - {text_c}
+                                - {text_e}
+                            """)
             else:
                 text_a = f"**{SHORTS[column_name].value}:** \t{row_label:<25}"
                 if SHORTS[column_name].name in dev_markings:
