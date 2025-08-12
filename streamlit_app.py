@@ -252,7 +252,7 @@ if selected_count > 0:
         try:
             row_label_int = int(row_label)  # Versuch, row_label in eine Ganzzahl umzuwandeln
             if column_name in job_markings and row_label_int < 90:
-                st.info(f"**{SHORTS[column_name].value}:** \t{row_label:<25} wird auf 90 angehoben", icon="🚨")
+                st.info(f"**{SHORTS[column_name].value}:** \t{row_label:<25} wird auf 90 angehoben (Haupteigenschaft)", icon="🚨")
                 if column_name in dev_markings:
                     text_b = f"sorgt für **{dev_points.get_dev_points(90)}** Entwicklungspunkte"
                     text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(90)}** aus dem Wert"
