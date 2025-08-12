@@ -37,16 +37,20 @@ def get_job_classes(directory="jobs"):
 
 def get_max_value_for(short_str: str) -> int:
     searched_for = 0
+    new_max = 0
     for stat in dude.Stats:
         if stat == short_str:
             searched_for = stat.max_value
-    return searched_for
+            new_max = roller.roll()
+    return searched_for, new_max
 
-@st.dialog("Do your farty things")
+@st.dialog("Do your thing!")
 def do_dialog(long_str:str, short_str:str):
+    max_roll = roller.roll()
     st.write(f"{long_str} ({short_str})")
-    st.write(f"rolled a {roller.roll()}")
+    st.write(f"rolled a {max_roll}")
     if st.button("got it!"):
+        dude.set_stat_value(short_str, max_roll)
         st.rerun()
 
 # Prüfe, ob Bob übergeben wurde
@@ -58,6 +62,7 @@ if "bob" in st.session_state:
     with st.expander("Mehr Infos anzeigen"):
         st.text(f"Hier stehen zusätzliche Details.\nAlter:    {dude.age}\nVolk:     {dude.race}")
         st.text(f"Name:{dude.name:>23}")
+        st.text(f"Namenszusatz:{dude.more_name:>23}")
         st.text(f"Alter:{dude.age:>25}")
         st.text(f"Beruf:{dude.job.name:>31}")
         st.text(f"{dude.Stats[-1].name}:{dude.Stats[-1].max_value:>31}")
@@ -95,14 +100,16 @@ if "bob" in st.session_state:
             st.markdown("nichts ausgewählt")
         else:
             for ps in pill_selection:
-                huh = get_max_value_for(ps)
-                st.markdown(f"{ps}: {huh} max")
+                huh, new = get_max_value_for(ps)
+                st.markdown(f"{ps}: {huh} max - new roll ({new})")
 
 
     cols = st.columns(len(button_names))
     for i, (col, short) in enumerate(zip(cols, button_names)):
         if get_max_value_for(str(short.name)) != 0:
-            st.write(f"value for {short.name} is {dude.Stats.get_max_value_for(short.name)}")
+            stat, new = get_max_value_for(short.name)
+            print(f"still gets no two elelments ({stat})/({new})")
+            #st.write(f"value for {short.name} is {dude.Stats.get_max_value_for(short.name)}")
         if col.button(short.name):
             st.write(f"Button für {short.value} ({short.name}) geklickt!")
             do_dialog(short.value, short.name)

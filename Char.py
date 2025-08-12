@@ -71,12 +71,15 @@ class Char:
     def set_race(self, race: str):
         self.race = race
         
-    def set_stat_value(self, stat_short:str, value:int):
+    def set_stat_value(self, stat_short:str, value:int, set_max: bool = False):
         for s in self.Stats:
             if s.name == stat_short:
-                print(f"({stat_short}/{value}) for: {s.name}")
-                s.value = value
-                print(f"(got: {s.value}")
+                if set_max:
+                    s.max_value = value
+                else:
+                    print(f"({stat_short}/{value}) for: {s.name}")
+                    s.value = value
+                    print(f"(got: {s.value}")
     
     def get_value_for_stat(self, short: str, max: bool = False) -> int:
         return_value = 0

@@ -3,6 +3,8 @@ import streamlit as st
 from SHORTS import SHORTS
 from Rolls import Rolls
 from Char import Char
+from tables import dev_points
+import Bonus
 
 roller = Rolls(100, minimum=20)
 
@@ -27,7 +29,7 @@ col1, col2, col3 = st.columns(3)
 
 # Dropdown-Menus from folder jobs/races content
 # char-names and misc data collection
-selected_name = col1.text_input("Gib einen Namen ein", help="you name dummy")
+selected_name = col1.text_input("Gib einen Namen ein", help="the name please")
 selected_more_name = col2.text_input("Gib einen Namenszusatz ein")
 #st.divider()
 #----
@@ -81,9 +83,10 @@ def do_save(selected_items, job_stats):
 
     bob.age = selected_age
     bob.race = selected_race
+    bob.more_name = selected_more_name
 
     st.write(f"{str(my_collection)}")
-    st.write(f"neuer Durchschnitt: {mySum/10}")
+    st.write(f"neuer Durchschnitt: {mySum/10} {round(mySum/10-avg, 2):+} besser als vorher")
     # saving bob in session 
     st.session_state["saved"] = True  # <-- Save-FLAG setzen
     st.session_state["bob"] = bob     # <-- Bob in den session_state speichern
@@ -108,14 +111,26 @@ def enforce_single_selection(row_idx, col_idx):
 
 
 # Tabelle mit Checkboxen anzeigen
-st.header("Kreuz-Tabelle")
+st.subheader("Zuweisung der Werte zu Eigenschaften", divider="red")
 #st.write("Zeilenbeschriftungen (row_labels):", row_labels)
+with st.expander("wenn eine Erklärung gebraucht wird:"):
+    st.write("Für Deinen Charakter wurde bereits 10x gewürfelt.")
+    st.write("Die Ergebnisse befinden sich in der linken Spalte (unter **Würfe**).")
+    st.write("Du kannst diese Werte den Eigenschaften zuweisen, indem Du die Kreuzchen setzt.")
+    st.write("-- Jeder nur ein Kreuz! -- dafür sorgt das Programm selbst --")
+    st.text("Sobald Du einen Wert ausgewählt hast, werden die Auswirkungen Deiner Auswahl unten kommentiert.")
+    st.write("- Werte mit einem Sternchen (&#9734;) sind für die Berechnung der Entwicklungspunkte verantwortlich, **für alle Klassen gleichermaßen.**")
+    st.write("- Werte mit einem Pfeil nach oben (&#x2B06;) werden auf 90 angehoben, weil sie die Haupteigenschaften Deines Charakters und der gewählten Charakterklasse sind. Je nach Auswahl der Charakterklasse ändern sich auch die Haupteigenschaften.")
+    st.warning("Erst wenn **alle 10 Werte** verteilt wurden, kannst Du die Verteilung speichern und für den Charakter übernehmen.") 
+    st.write("- Welcher Wert noch fehlt, sieht man leicht in der Auswahlbeschreibung unter dem Feld.")
+    st.error("Beachte, sind die Anfangswerte Deines Charakters. In einem nächsten Schritt wird für jeden Wert erneut gewürfelt, um den potentiellen Maximalwert zu ermitteln, den Dein Charakter im Laufe seiner Karriere erreichen kann, wenn er lang genug überlebt.")
+    
 avg = sum(row_labels)/len(row_labels)
-st.write(f"Durchschnitt: {avg} ({avg-60:.1f})")
+st.write(f"**Durchschnitt der 10 Würfelwerte:** {avg} ({avg-60:.1f}) -- *vor der Verteilung der Werte*")
 
 # Kopfzeile der Tabelle anzeigen
 header_cols = st.columns(len(columns) + 1)  # +1 für die Zeilenbeschriftung
-header_cols[0].write("Würfe")  # Erste Spalte für Zeilenbeschriftungen
+header_cols[0].write("**Würfe**")  # Erste Spalte für Zeilenbeschriftungen
 job_markings = bob.job.prime_stats
 dev_markings = ["CO", "AG", "SD", "ME", "RE"]
 
@@ -194,6 +209,16 @@ def set_list(active: bool):
 
 st.write(f"**Anzahl der aktivierten Checkboxen:** {selected_count}")
 
+
+@st.dialog("You forgot: ")
+def do_dialog(long_str:str, short_str:str):
+    st.write(f"{long_str} ({short_str})")
+#    st.write(f"rolled a {max_roll}")
+    if st.button("got it!"):
+#        dude.set_stat_value(short_str, max_roll)
+        st.rerun()
+        
+
 #if st.button("Zufallsverteilung"):
 #    st.warning("nichts dem Zufall überlassen")
 #    set_list(True)
@@ -204,9 +229,13 @@ if selected_count == 10:
         do_save(selected_per_row.items(), job_markings)
 
 # "Übernehmen"-Button NUR anzeigen, wenn gespeichert wurde
-if st.session_state.get("saved", False):
+if st.session_state.get("saved", False) and selected_count == 10:
     if st.button("Übernehmen"):
+        if selected_name == "":
+            do_dialog("your name", "farts")
+        
         do_save(selected_per_row.items(), job_markings)
+        
         st.session_state["bob"] = bob
         st.session_state["go_to_test"] = True  # Flag für Seitenwechsel setzen
 
@@ -223,8 +252,26 @@ if selected_count > 0:
         try:
             row_label_int = int(row_label)  # Versuch, row_label in eine Ganzzahl umzuwandeln
             if column_name in job_markings and row_label_int < 90:
-                st.info(f"{SHORTS[column_name].value}: \t{row_label:<25} wird auf 90 angehoben", icon="🚨")        
+                st.info(f"{SHORTS[column_name].value}: \t{row_label:<25} wird auf 90 angehoben", icon="🚨")
+                st.write("- is")
             else:
-                st.write(f"- {SHORTS[column_name].value}: \t{row_label:<25}")
+                text_a = f"**{SHORTS[column_name].value}:** \t{row_label:<25}"
+                if SHORTS[column_name].name in dev_markings:
+                    text_b = f"sorgt für **{dev_points.get_dev_points(row_label)}** Entwicklungspunkte"
+                    text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(row_label)}** aus dem Wert"
+                    st.write(f"""
+                            - {text_a}
+                                - {text_b}
+                                - {text_c}
+                            """)
+                else:
+                    text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(row_label)}** aus dem Wert"
+                    st.write(f"""
+                            - {text_a}
+                                - {text_c}
+                            """)
+                    
         except ValueError:
             st.markdown(f"**kein Wert für:** {SHORTS[column_name].name} ({SHORTS[column_name].value})")
+            
+            
