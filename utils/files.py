@@ -1,5 +1,5 @@
 # collects files in folders and makes list of them
-# for st.selectboxes to use as basis
+# for st.selectbox to use as basis
 import streamlit as st
 import os
 

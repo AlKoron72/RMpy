@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
-#from Char import Char
+from Char import Char
 from SHORTS import SHORTS
 from Rolls import Rolls
 
@@ -56,6 +56,11 @@ def do_dialog(long_str:str, short_str:str):
 # Prüfe, ob Bob übergeben wurde
 if "bob" in st.session_state:
     dude = st.session_state["bob"]
+    if isinstance(dude, Char):
+        st.write(f"{dude.name} ist ein gültiger Charakter.")
+    else:
+        st.error("Ungültiger Charakter oder nicht gespeichert.")
+
     #print(bob.get)
     st.write(f"{dude.name} wurde übergeben:")
 

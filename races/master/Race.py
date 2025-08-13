@@ -1,7 +1,7 @@
 from SHORTS import SHORTS
 
 class Race:
-    def __init__(self):
+    def __init__(self, **args):
         self.name = "not a name"
         self.slot_name = "Mensch (gewöhnlich)" # ein Beschreibungstext für die Dropdowns
         self.boni = {}

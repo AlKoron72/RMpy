@@ -6,6 +6,7 @@ from tables import dev_points, Bonus
 from utils.files import get_files_in_dir
 from utils.ui_elements import show_assignment_explanation, show_character_inputs
 from utils.save_char import save_char
+import importlib
 
 roller = Rolls(100, minimum=20)
 
@@ -162,7 +163,15 @@ def do_dialog(long_str:str, short_str:str):
 # Zeige die Anzahl der aktivierten Checkboxen
 if selected_count == 10:
     if st.button("Save", key="save"):
-        save_char(bob, selected_per_row.items(), job_markings, selected_age, selected_race, selected_more_name, avg, selected_job)
+        save_char(bob,
+                  selected_per_row.items(),
+                  job_markings,
+                  selected_age,
+                  selected_race,
+                  selected_more_name,
+                  avg,
+                  selected_job
+        )
 
 # "Übernehmen"-Button NUR anzeigen, wenn gespeichert wurde
 if st.session_state.get("saved", False) and selected_count == 10:

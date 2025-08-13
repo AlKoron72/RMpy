@@ -44,7 +44,6 @@ if __name__ == "__main__":
     my_skill = Skill("test")
     print(my_skill)
 
-
     body_dev = Skill("Body-Development")
     body_dev.type = "Body"
     body_dev.cost = [1,3]

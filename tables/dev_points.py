@@ -1,18 +1,7 @@
 def get_dev_points(wert: int) -> float:
     # für Werte zwischen 1 und 100
     # aus der Tabelle RMC I - Seite 49
-    dev_points = [-1.0]
-    dev_points.append(1.0)      #1
-    dev_points.append(1.3)      #2
-    dev_points.append(1.6)      #3
-    dev_points.append(1.8)      #4
-    dev_points.append(2.0)      #5
-
-    dev_points.append(2.2)      #6
-    dev_points.append(2.4)      #7
-    dev_points.append(2.6)      #8
-    dev_points.append(2.7)      #9
-    dev_points.append(2.8)      #10
+    dev_points = [-1.0, 1.0, 1.3, 1.6, 1.8, 2.0, 2.2, 2.4, 2.6, 2.7, 2.8] #0-1
 
     dev_points.extend([2.9] * 2)  #11-12
     dev_points.extend([3.0] * 3)  #13-15
@@ -26,7 +15,7 @@ def get_dev_points(wert: int) -> float:
     dev_points.extend([4.8] * 4)  #33-36
     dev_points.extend([5.0] * 4)  #37-40
 
-    dev_points.extend([5.5] * 19)  #41-59 (Achtung, 59-41+1 = 19!)
+    dev_points.extend([5.5] * 19)  #41-59
 
     dev_points.extend([6.0] * 4)   #60-63
     dev_points.extend([6.3] * 4)   #64-67
@@ -52,34 +41,22 @@ def get_dev_points(wert: int) -> float:
     dev_points.append(9.8)         #99
     dev_points.append(10.0)        #100
 
-    return dev_points[wert]
+    if wert > 100:
+        return get_dev_points_100_plus(wert)
+    else:
+        return dev_points[wert]
 
-def get_dev_points_100_plus(wert: int) -> int:
-    # für Werte 100+
+def get_dev_points_100_plus(wert: int) -> float:
+    # Werte 100+
     # aus der Tabelle RMC I - Seite 52
-    match wert:
-        case 0:
-            bonus = 25
-            return bonus
-        case int(x) if 0 < x < 5:
-            bonus = 25 + wert * 5
-            return bonus
-        case int(x) if 4 < x < 10:
-            bonus = 25 + 20 + (wert - 4) * 4
-            return bonus
-        case int(x) if 9 < x < 15:
-            bonus = 25 + 20 + 20 + (wert - 9) * 3
-            return bonus
-        case int(x) if 14 < x < 20:
-            bonus = 25 + 20 + 20 + 15 + (wert - 14) * 2
-            return bonus
-        case _:
-            bonus = 25 + 20 + 20 + 15 + 10 + (wert - 19) * 1
-            return bonus
+    return 10 + ((wert - 100) * 0.5)
 
 
 if __name__ == "__main__":
+    print(get_dev_points(1))
     print(get_dev_points(50))
+    print(get_dev_points(100))
+    print(get_dev_points(102))
     '''
     for x in range(1, 101):
         print(f"{x} / {standard_bonus(x)}")

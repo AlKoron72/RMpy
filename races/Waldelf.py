@@ -1,6 +1,6 @@
 from races.master import Race
 
-class Elf(Race):
+class Waldelf(Race):
     def __init__(self):
         super().__init__()
         self.boni["QU"] = 10

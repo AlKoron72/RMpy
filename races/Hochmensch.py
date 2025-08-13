@@ -1,6 +1,6 @@
 from races.master import Race
 
-class Mensch(Race):
+class Hochmensch(Race):
     def __init__(self):
         super().__init__()
         self.boni["ST"] = 10

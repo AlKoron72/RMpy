@@ -1,11 +1,11 @@
-'''
+"""
 this is a master class for all Jobs
-the jobs get extended by all Job-Classes in folder jobs,
+the jobs get extended by all Job-Classes in folder jobs
 main functions get provided by this class
 ---
 made by: Alexander Günther
 date: 08/2025
-'''
+"""
 
 
 class Job:
@@ -15,9 +15,6 @@ class Job:
         self.name = name
         self.prime_stats = self.get_prime()
         self.spell_stat = None  # Default: kein Spell-Attribut
-
-#    def get_skill_cost(self, name: str) -> list[int]:
-#        return Skill
 
     def get_spell_stat(self) -> str:
         return self.spell_stat
