@@ -1,10 +1,8 @@
-import os
 import streamlit as st
 from SHORTS import SHORTS
 from Rolls import Rolls
 from Char import Char
-from tables import dev_points
-import Bonus
+from tables import dev_points, Bonus
 from utils.files import get_files_in_dir
 from utils.ui_elements import show_assignment_explanation, show_character_inputs
 from utils.save_char import save_char

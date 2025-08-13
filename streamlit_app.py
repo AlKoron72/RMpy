@@ -3,8 +3,7 @@ import streamlit as st
 from SHORTS import SHORTS
 from Rolls import Rolls
 from Char import Char
-from tables import dev_points
-import Bonus
+from tables import dev_points, Bonus
 
 roller = Rolls(100, minimum=20)
 

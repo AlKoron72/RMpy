@@ -1,4 +1,4 @@
-import Bonus
+from tables import Bonus
 from Rolls import Rolls
 # import SHORTS
 # from tables import max_stats
