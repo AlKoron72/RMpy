@@ -29,7 +29,7 @@ def save_char(char: Char,
         else:
             my_collection.append(f"{column_name}: Keine Auswahl")
             
-    mySum = sum(s.value for s in char.Stats)
+    my_sum = sum(s.value for s in char.Stats)
 
     char.age = selected_age
     char.race = selected_race
@@ -38,7 +38,7 @@ def save_char(char: Char,
 
     #ST display-elements
     st.write(f"{str(my_collection)}")
-    st.write(f"neuer Durchschnitt: {mySum/10} {round(mySum/10-avg, 2):+} besser als vorher")
+    st.write(f"neuer Durchschnitt: {my_sum/10} {round(my_sum/10-avg, 2):+} besser als vorher")
     
     # ST-Session to be saved
     st.session_state["saved"] = True

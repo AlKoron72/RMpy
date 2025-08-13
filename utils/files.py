@@ -1,15 +1,7 @@
-# collects files in folders and mmakes list of them
+# collects files in folders and makes list of them
 # for st.selectboxes to use as basis
-
- 
 import streamlit as st
 import os
-
-def get_job_classes(directory="jobs"):
-    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
-
-def get_races(directory="races"):
-    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
 
 def get_files_in_dir(directory:str ="jobs"):
     try:
