@@ -1,4 +1,7 @@
-# collects alls small functions 
+# collects files in folders and mmakes list of them
+# for st.selectboxes to use as basis
+
+ 
 import streamlit as st
 import os
 

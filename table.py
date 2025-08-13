@@ -6,6 +6,7 @@ from Char import Char
 from tables import dev_points
 import Bonus
 from utils.files import get_files_in_dir
+from utils.save_char import save_char
 
 roller = Rolls(100, minimum=20)
 
@@ -51,39 +52,6 @@ def do_max(collection):
     #for c in collection:
         #print(f"is: {c}")
     
-# save Button-Function
-def do_save(selected_items, job_stats):
-    st.write("folgende Werte gespeichert:")
-    my_collection = []
-    
-    for column_name, row_label in selected_items:
-        if row_label:
-            if column_name in job_stats:
-                # for job stats
-                my_collection.append(f"{column_name}: {max(90, row_label)}")
-                bob.set_stat_value(column_name, max(90, row_label))
-            else:
-                # all the non-job-stats
-                my_collection.append(f"{column_name}: {row_label}")
-                bob.set_stat_value(column_name, row_label)
-        else:
-            my_collection.append(f"{column_name}: Keine Auswahl")
-            
-    mySum = 0
-    for s in bob.Stats:
-        mySum += s.value
-
-    bob.age = selected_age
-    bob.race = selected_race
-    bob.more_name = selected_more_name
-
-    st.write(f"{str(my_collection)}")
-    st.write(f"neuer Durchschnitt: {mySum/10} {round(mySum/10-avg, 2):+} besser als vorher")
-    # saving bob in session 
-    st.session_state["saved"] = True  # <-- Save-FLAG setzen
-    st.session_state["bob"] = bob     # <-- Bob in den session_state speichern
-
-
 # Funktion, um den Zustand zu prüfen und nur eine Checkbox pro Zeile/Spalte zuzulassen
 def enforce_single_selection(row_idx, col_idx):
     # Schlüssel der aktuell geklickten Checkbox
@@ -181,7 +149,7 @@ for col_idx, column_name in enumerate(columns):  # Iteriere über alle Spalten
     for row_idx, row_label in enumerate(row_labels):  # Iteriere über alle Zeilen
         if st.session_state[f"{row_idx}_{col_idx}"]:
             selected_row = row_label  # Speichere die Zeilenbeschriftung der aktivierten Checkbox
-            break
+#            break
     # Füge die Spalte und den zugehörigen Wert (oder "Keine Auswahl") hinzu
     if selected_row is not None:
         selected_per_row[column_name] = selected_row
@@ -218,15 +186,16 @@ def do_dialog(long_str:str, short_str:str):
 # Zeige die Anzahl der aktivierten Checkboxen
 if selected_count == 10:
     if st.button("Save", key="save"):
-        do_save(selected_per_row.items(), job_markings)
+        save_char(bob, selected_per_row.items(), job_markings, selected_age, selected_race, selected_more_name, avg, selected_job)
 
 # "Übernehmen"-Button NUR anzeigen, wenn gespeichert wurde
 if st.session_state.get("saved", False) and selected_count == 10:
     if st.button("Übernehmen"):
         if selected_name == "":
             do_dialog("your name", "farts")
+
+        save_char(bob, selected_per_row.items(), job_markings, selected_age, selected_race, selected_more_name, avg, selected_job)
         
-        do_save(selected_per_row.items(), job_markings)
         
         st.session_state["bob"] = bob
         st.session_state["go_to_test"] = True  # Flag für Seitenwechsel setzen

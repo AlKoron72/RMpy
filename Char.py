@@ -25,7 +25,7 @@ class Char:
             job_class = getattr(module, job)
             self.job = job_class(job)
         else:
-            self.job = job  # String "Berufsloser"#        for s in SHORTS.SHORTS:
+            self.job = job  # String "Berufsloser"#
         self.hit_points_base:int = 1
         self.hit_points_total:int = self.hit_points_base
         self.hit_points_temp:int = self.hit_points_base
