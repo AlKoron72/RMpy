@@ -8,3 +8,4 @@ class Mensch(Race):
         self.boni["PR"] = 10
         self.boni["CO"] = 10
         self.boni["AG"] = -5
+        self.slot_name = "Hoher Mensch ..."

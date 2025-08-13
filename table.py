@@ -6,6 +6,7 @@ from Char import Char
 from tables import dev_points
 import Bonus
 from utils.files import get_files_in_dir
+from utils.ui_elements import show_assignment_explanation, show_character_inputs
 from utils.save_char import save_char
 
 roller = Rolls(100, minimum=20)
@@ -17,35 +18,13 @@ races = get_files_in_dir("races")
 age_range = list(range(16, 999))
 age_range.append(0000)
 
-# Spalten anlegen
-col1, col2, col3 = st.columns(3)
-
-# Dropdown-Menus from folder jobs/races content
-# char-names and misc data collection
-selected_name = col1.text_input("Gib einen Namen ein", help="the name please")
-selected_more_name = col2.text_input("Gib einen Namenszusatz ein")
-#st.divider()
-#----
-col1, col2, col3 = st.columns(3)
-selected_job = col1.selectbox("Wähle Deine Klasse", job_classes, index=3)
-selected_race = col2.selectbox("Wähle Dein Volk", races, index=1, help="Hilfe zu den einzelnen Völkern gibt es nur für das jeweils ausgewählte.")
-age_help = "Alter eingeben oder auswählen.\nWenn größer 999, dann kann man die Option 'andere...' wählen."
-selected_age = col3.selectbox("Wähle Deine Alter", age_range, index=2, help=age_help)
+# Dropdowns und Eingabefelder anzeigen
+selected_name, selected_more_name, selected_job, selected_race, selected_age = show_character_inputs(job_classes, races, age_range)
 
 bob = Char("Bob", 19, job=selected_job, race=selected_race)
 
-# Spaltennamen aus dem Enum extrahieren
-columns = [short.name for short in SHORTS]
-row_labels = []
-
-# Benutzerdefinierte Zeilenbeschriftung
-if "row_labels" not in st.session_state:
-    st.session_state.row_labels = []
-    for s in SHORTS:
-        numb = int(roller.roll())
-        st.session_state.row_labels.append(numb)
-    st.session_state.row_labels.sort()
-row_labels = st.session_state.row_labels
+# Erklärung/Expander anzeigen
+show_assignment_explanation()
 
 def do_max(collection):
     print("do_max")
@@ -70,21 +49,19 @@ def enforce_single_selection(row_idx, col_idx):
                 st.session_state[f"{r}_{col_idx}"] = False
 
 
-# Tabelle mit Checkboxen anzeigen
-st.subheader("Zuweisung der Werte zu Eigenschaften", divider="red")
-#st.write("Zeilenbeschriftungen (row_labels):", row_labels)
-with st.expander("wenn eine Erklärung gebraucht wird:"):
-    st.write("Für Deinen Charakter wurde bereits 10x gewürfelt.")
-    st.write("Die Ergebnisse befinden sich in der linken Spalte (unter **Würfe**).")
-    st.write("Du kannst diese Werte den Eigenschaften zuweisen, indem Du die Kreuzchen setzt.")
-    st.write("-- Jeder nur ein Kreuz! -- dafür sorgt das Programm selbst --")
-    st.text("Sobald Du einen Wert ausgewählt hast, werden die Auswirkungen Deiner Auswahl unten kommentiert.")
-    st.write("- Werte mit einem Sternchen (&#9734;) sind für die Berechnung der Entwicklungspunkte verantwortlich, **für alle Klassen gleichermaßen.**")
-    st.write("- Werte mit einem Pfeil nach oben (&#x2B06;) werden auf 90 angehoben, weil sie die Haupteigenschaften Deines Charakters und der gewählten Charakterklasse sind. Je nach Auswahl der Charakterklasse ändern sich auch die Haupteigenschaften.")
-    st.warning("Erst wenn **alle 10 Werte** verteilt wurden, kannst Du die Verteilung speichern und für den Charakter übernehmen.") 
-    st.write("- Welcher Wert noch fehlt, sieht man leicht in der Auswahlbeschreibung unter dem Feld.")
-    st.error("Beachte, sind die Anfangswerte Deines Charakters. In einem nächsten Schritt wird für jeden Wert erneut gewürfelt, um den potentiellen Maximalwert zu ermitteln, den Dein Charakter im Laufe seiner Karriere erreichen kann, wenn er lang genug überlebt.")
-    
+# Spaltennamen aus dem Enum extrahieren
+columns = [short.name for short in SHORTS]
+row_labels = []
+
+# Benutzerdefinierte Zeilenbeschriftung
+if "row_labels" not in st.session_state:
+    st.session_state.row_labels = []
+    for s in SHORTS:
+        numb = int(roller.roll())
+        st.session_state.row_labels.append(numb)
+    st.session_state.row_labels.sort()
+row_labels = st.session_state.row_labels
+
 avg = sum(row_labels)/len(row_labels)
 st.write(f"**Durchschnitt der 10 Würfelwerte:** {avg} ({avg-60:.1f}) -- *vor der Verteilung der Werte*")
 
@@ -94,6 +71,7 @@ header_cols[0].write("**Würfe**")  # Erste Spalte für Zeilenbeschriftungen
 job_markings = bob.job.prime_stats
 dev_markings = ["CO", "AG", "SD", "ME", "RE"]
 
+# Tabelle mit Checkboxen anzeigen
 for col, column_name in zip(header_cols[1:], columns):
     if column_name in job_markings and column_name in dev_markings:  
         # Dev-Stat UND Job-Stat

@@ -34,7 +34,7 @@ def save_char(char: Char,
     char.age = selected_age
     char.race = selected_race
     char.more_name = selected_more_name
-    char.job = selected_job
+    char.job = selected_job.name
 
     #ST display-elements
     st.write(f"{str(my_collection)}")

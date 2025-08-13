@@ -3,6 +3,7 @@ from SHORTS import SHORTS
 class Race:
     def __init__(self):
         self.name = "not a name"
+        self.slot_name = "Mensch (gewöhnlich)" # ein Beschreibungstext für die Dropdowns
         self.boni = {}
         for s in SHORTS:
             self.boni[s.name] = 0

@@ -58,15 +58,19 @@ if "bob" in st.session_state:
     dude = st.session_state["bob"]
     #print(bob.get)
     st.write(f"{dude.name} wurde übergeben:")
+
+#    with st.expander("Mehr Infos anzeigen"):
+#        st.write(str(st.session_state["bob"]))
     
+
     with st.expander("Mehr Infos anzeigen"):
         st.text(f"Hier stehen zusätzliche Details.\nAlter:    {dude.age}\nVolk:     {dude.race}")
         st.text(f"Name:{dude.name:>23}")
         st.text(f"Namenszusatz:{dude.more_name:>23}")
         st.text(f"Alter:{dude.age:>25}")
-        st.text(f"Beruf:{dude.job.name:>31}")
-        st.text(f"{dude.Stats[-1].name}:{dude.Stats[-1].max_value:>31}")
-        st.text(f"Stats of {dude.name}: {dude}")
+#        st.text(f"Beruf:{dude.job.name:>31}")
+#        st.text(f"{dude.Stats[-1].name}:{dude.Stats[-1].max_value:>31}")
+#        st.text(f"Stats of {dude.name}: {dude}")
 
     #st.write(str(bob))
 

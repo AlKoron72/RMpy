@@ -1,7 +1,7 @@
 import SHORTS
 from Rolls import Rolls
 from Stat import Stat
-#from Job import Job
+from jobs.master import Job
 import pandas as pd
 import importlib
 from tables import dev_points, spell_points
