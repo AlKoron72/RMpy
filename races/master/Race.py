@@ -2,6 +2,7 @@ from SHORTS import SHORTS
 
 class Race:
     def __init__(self):
+        self.name = "not a name"
         self.boni = {}
         for s in SHORTS:
             self.boni[s.name] = 0

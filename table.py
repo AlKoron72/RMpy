@@ -5,22 +5,14 @@ from Rolls import Rolls
 from Char import Char
 from tables import dev_points
 import Bonus
+from utils.files import get_files_in_dir
 
 roller = Rolls(100, minimum=20)
 
 st.session_state["go_to_test"] = False  # Flag für Seitenwechsel setzen
 
-
-def get_job_classes(directory="jobs"):
-    # Listet alle py-Dateien im Verzeichnis auf, ohne die Endung .py
-    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
-
-def get_races(directory="races"):
-    # Listet alle py-Dateien im Verzeichnis auf, ohne die Endung .py
-    return [f[:-3] for f in os.listdir(directory) if f.endswith(".py") and not f.startswith("__")]
-
-job_classes = get_job_classes()
-races = get_races()
+job_classes = get_files_in_dir("jobs")
+races = get_files_in_dir("races")
 age_range = list(range(16, 999))
 age_range.append(0000)
 
@@ -35,7 +27,7 @@ selected_more_name = col2.text_input("Gib einen Namenszusatz ein")
 #----
 col1, col2, col3 = st.columns(3)
 selected_job = col1.selectbox("Wähle Deine Klasse", job_classes, index=3)
-selected_race = col2.selectbox("Wähle Dein Volk", races, index=1)
+selected_race = col2.selectbox("Wähle Dein Volk", races, index=1, help="Hilfe zu den einzelnen Völkern gibt es nur für das jeweils ausgewählte.")
 age_help = "Alter eingeben oder auswählen.\nWenn größer 999, dann kann man die Option 'andere...' wählen."
 selected_age = col3.selectbox("Wähle Deine Alter", age_range, index=2, help=age_help)
 
