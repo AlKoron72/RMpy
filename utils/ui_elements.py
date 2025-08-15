@@ -24,3 +24,12 @@ def show_assignment_explanation():
         st.warning("Erst wenn **alle 10 Werte** verteilt wurden, kannst Du die Verteilung speichern und für den Charakter übernehmen.") 
         st.write("- Welcher Wert noch fehlt, sieht man leicht in der Auswahlbeschreibung unter dem Feld.")
         st.error("Beachte, sind die Anfangswerte Deines Charakters. In einem nächsten Schritt wird für jeden Wert erneut gewürfelt, um den potentiellen Maximalwert zu ermitteln, den Dein Charakter im Laufe seiner Karriere erreichen kann, wenn er lang genug überlebt.")
+
+def do_dialog(long_str: str, short_str: str):
+    """
+    Display a dialog indicating a missing input.
+    """
+    st.dialog("You forgot: ")
+    st.write(f"{long_str} ({short_str})")
+    if st.button("got it!"):
+        st.rerun()

@@ -4,9 +4,10 @@ from Rolls import Rolls
 from Char import Char
 from tables import dev_points, Bonus
 from utils.files import get_files_in_dir
-from utils.ui_elements import show_assignment_explanation, show_character_inputs
+from utils.ui_elements import show_assignment_explanation, show_character_inputs, do_dialog
 from utils.save_char import save_char
-import importlib
+from utils.auswahl_ui import show_selection_summary
+#import importlib
 
 roller = Rolls(100, minimum=20)
 
@@ -146,16 +147,6 @@ def set_list(active: bool):
 
 st.write(f"**Anzahl der aktivierten Checkboxen:** {selected_count}")
 
-
-@st.dialog("You forgot: ")
-def do_dialog(long_str:str, short_str:str):
-    st.write(f"{long_str} ({short_str})")
-#    st.write(f"rolled a {max_roll}")
-    if st.button("got it!"):
-#        dude.set_stat_value(short_str, max_roll)
-        st.rerun()
-        
-
 #if st.button("Zufallsverteilung"):
 #    st.warning("nichts dem Zufall überlassen")
 #    set_list(True)
@@ -192,49 +183,40 @@ if st.session_state.get("go_to_test", False):
 
 
 # Zeige die Auswahl und die Auswirkungen der Auswahl oben
-if selected_count > 0:
-    st.header("Auswahl:")
-    for column_name, row_label in selected_per_row.items():  # Iteriere durch alle Spalten
-        try:
-            row_label_int = int(row_label)  # Versuch, row_label in eine Ganzzahl umzuwandeln
-            if column_name in job_markings and row_label_int < 90:
-                st.info(f"**{SHORTS[column_name].value}:** \t{row_label:<25} wird auf 90 angehoben (Haupteigenschaft)", icon="🚨")
-                if column_name in dev_markings:
-                    text_b = f"sorgt für **{dev_points.get_dev_points(90)}** Entwicklungspunkte"
-                    text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(90)}** aus dem Wert"
-                    text_d = f"anstatt der {dev_points.get_dev_points(row_label)} für {row_label}"
-                    text_e = f"anstatt der {Bonus.standard_bonus(row_label)} für {row_label}"
-                    st.write(f"""
-                            - - {text_b}
-                                - {text_d}
-                            - - {text_c}
-                                - {text_e}
-                            """)
-                else:
-                    text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(90)}** aus dem Wert"
-                    text_e = f"anstatt der {Bonus.standard_bonus(row_label)} für {row_label}"
-                    st.write(f"""
-                            - - {text_c}
-                                - {text_e}
-                            """)
-            else:
-                text_a = f"**{SHORTS[column_name].value}:** \t{row_label:<25}"
-                if SHORTS[column_name].name in dev_markings:
-                    text_b = f"sorgt für **{dev_points.get_dev_points(row_label)}** Entwicklungspunkte"
-                    text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(row_label)}** aus dem Wert"
-                    st.write(f"""
-                            - {text_a}
-                                - {text_b}
-                                - {text_c}
-                            """)
-                else:
-                    text_c = f"erzeugt eine Bonus von **{Bonus.standard_bonus(row_label)}** aus dem Wert"
-                    st.write(f"""
-                            - {text_a}
-                                - {text_c}
-                            """)
-                    
-        except ValueError:
-            st.markdown(f"**kein Wert für:** {SHORTS[column_name].name} ({SHORTS[column_name].value})")
-            
-            
+show_selection_summary(selected_count, selected_per_row, SHORTS, dev_markings, dev_points, Bonus, job_markings)
+
+import streamlit as st
+
+def show_character_inputs(job_classes, races, age_range):
+    col1, col2, col3 = st.columns(3)
+    selected_name = col1.text_input("Gib einen Namen ein", help="the name please")
+    selected_more_name = col2.text_input("Gib einen Namenszusatz ein")
+    col1, col2, col3 = st.columns(3)
+    selected_job = col1.selectbox("Wähle Deine Klasse", job_classes, index=3)
+    selected_race = col2.selectbox("Wähle Dein Volk", races, index=1, help="Hilfe zu den einzelnen Völkern gibt es nur für das jeweils ausgewählte.")
+    age_help = "Alter eingeben oder auswählen.\nWenn größer 999, dann kann man die Option 'andere...' wählen."
+    selected_age = col3.selectbox("Wähle Deine Alter", age_range, index=2, help=age_help)
+    return selected_name, selected_more_name, selected_job, selected_race, selected_age
+
+def show_assignment_explanation():
+    st.subheader("Zuweisung der Werte zu Eigenschaften", divider="red")
+    with st.expander("wenn eine Erklärung gebraucht wird:"):
+        st.write("Für Deinen Charakter wurde bereits 10x gewürfelt.")
+        st.write("Die Ergebnisse befinden sich in der linken Spalte (unter **Würfe**).")
+        st.write("Du kannst diese Werte den Eigenschaften zuweisen, indem Du die Kreuzchen setzt.")
+        st.write("-- Jeder nur ein Kreuz! -- dafür sorgt das Programm selbst --")
+        st.text("Sobald Du einen Wert ausgewählt hast, werden die Auswirkungen Deiner Auswahl unten kommentiert.")
+        st.write("- Werte mit einem Sternchen (&#9734;) sind für die Berechnung der Entwicklungspunkte verantwortlich, **für alle Klassen gleichermaßen.**")
+        st.write("- Werte mit einem Pfeil nach oben (&#x2B06;) werden auf 90 angehoben, weil sie die Haupteigenschaften Deines Charakters und der gewählten Charakterklasse sind. Je nach Auswahl der Charakterklasse ändern sich auch die Haupteigenschaften.")
+        st.warning("Erst wenn **alle 10 Werte** verteilt wurden, kannst Du die Verteilung speichern und für den Charakter übernehmen.") 
+        st.write("- Welcher Wert noch fehlt, sieht man leicht in der Auswahlbeschreibung unter dem Feld.")
+        st.error("Beachte, sind die Anfangswerte Deines Charakters. In einem nächsten Schritt wird für jeden Wert erneut gewürfelt, um den potentiellen Maximalwert zu ermitteln, den Dein Charakter im Laufe seiner Karriere erreichen kann, wenn er lang genug überlebt.")
+
+def do_dialog(long_str: str, short_str: str):
+    """
+    Display a dialog indicating a missing input.
+    """
+    st.dialog("You forgot: ")
+    st.write(f"{long_str} ({short_str})")
+    if st.button("got it!"):
+        st.rerun()
