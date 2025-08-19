@@ -17,17 +17,9 @@ def encrypt(this_string: str, direction: int) -> str:
     for letter in this_string:
         if letter in all_letters:
             l_index = all_letters.index(letter)
-            
-            if l_index + direction >= len(all_letters):
-                l_index -= len(all_letters)
-            elif l_index + direction < 0:
-                l_index += len(all_letters)
-            
-            return_string += all_letters[l_index + direction]
+            return_string += all_letters[(l_index + direction) % len(all_letters)]
         else:
-            # for letters not in list -> not encrypted
             return_string += letter
-    
     return return_string
 
 def decrypt(this_string:str, direction:int) -> str:
