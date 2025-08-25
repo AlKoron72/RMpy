@@ -1,5 +1,22 @@
 import random
 
+"""
+innerhalb dieses Systems würde ich gerne ein Kampfsystem erstellen,
+
+das Offensiv-Bonus (Skill-Wert) + Würfelwurf eines Charakters 
+mit einer Waffe gegen den Defensivbonus von 1 bis 3 Gegnern bemisst
+
+Ein Char kann dabei seine Werte erst gegen 2 Gegner gleichzeitig verteilen, 
+wenn er bereits über 11 oder mehr Skill-Punkte auf diese Waffe verteilt hat, 
+3 und mehr Gegner, wenn er mindestens 21 Skill-Punkte verteilt hat
+
+Außerdem soll die Parade der Waffe den Schaden zufügen, 
+der durch die Parade an Schadenspunkten verhindet wude.
+
+Hier kann gern mit verschiedenen Klassen jongliert werden, 
+um das System erweiterbar und mit verschieden Elementen kombinierbar zu machen
+"""
+
 class Weapon:
     def __init__(self, name, damage, parry, skill_points):
         self.name = name
