@@ -7,6 +7,33 @@ import importlib
 from tables import dev_points, spell_points
 
 class Char:
+    """
+    Represents a character in the RMpy system.
+
+    Attributes:
+        id (int): Unique identifier for the character.
+        race (str): The character's race.
+        name (str): The character's name.
+        more_name (str): Additional name information.
+        age (int): The character's age.
+        Stats (list): List of Stat instances representing character stats.
+        job (str or Job): The character's job or profession.
+        hit_points_base (int): Base hit points.
+        hit_points_total (int): Total hit points.
+        hit_points_temp (int): Temporary hit points.
+        spell_points (int): Spell points.
+        spell_points_temp (int): Temporary spell points.
+
+    Methods:
+        __str__(): Returns a string representation of the character.
+        create_empty_stats_df(): Creates a DataFrame with empty stats.
+        create_empty_set(): Initializes stats with zero values.
+        create_random_set(): Initializes stats with random values.
+        roll_all_max(): Sets all stats to their maximum values.
+        set_race(race): Sets the character's race.
+        set_stat_value(stat_short, value, set_max): Sets a stat's value or max value.
+        get_value_for_stat(short, max): Gets the value or max value for a stat.
+    """
     def __init__(self, name: str, age: int, more_name:str = "", job: str = "Berufsloser", random_set: bool = False, race: str = "Mensch"):
         self.id = 0
         self.race = race

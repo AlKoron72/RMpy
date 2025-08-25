@@ -1,4 +1,6 @@
 class Weapon:
+    """AI is creating summary for 
+    """
     def __init__(self, name: str, weight: float=1.0, range: float=1.0, damage: float=10.0):
         self.name = name
         self.damage = 10.0
